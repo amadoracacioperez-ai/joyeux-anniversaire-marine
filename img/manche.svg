@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <defs>
+    <linearGradient id="ciel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#78b4ff"/>
+      <stop offset="1" stop-color="#ffe0b5"/>
+    </linearGradient>
+    <linearGradient id="mer" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2f7bd8"/>
+      <stop offset="1" stop-color="#11367d"/>
+    </linearGradient>
+    <radialGradient id="soleil">
+      <stop offset="0" stop-color="#fff6c2"/>
+      <stop offset=".6" stop-color="#ffd166"/>
+      <stop offset="1" stop-color="#ffaf45"/>
+    </radialGradient>
+  </defs>
+
+  <!-- ciel, soleil, nuages, mouettes -->
+  <rect width="600" height="372" fill="url(#ciel)"/>
+  <circle cx="105" cy="105" r="80" fill="#fff3c9" opacity=".45"/>
+  <circle cx="105" cy="105" r="56" fill="url(#soleil)"/>
+  <g fill="#fff">
+    <ellipse cx="335" cy="98" rx="64" ry="22"/>
+    <ellipse cx="305" cy="82" rx="34" ry="24"/>
+    <ellipse cx="360" cy="78" rx="30" ry="21"/>
+    <ellipse cx="510" cy="178" rx="60" ry="19"/>
+    <ellipse cx="488" cy="162" rx="30" ry="20"/>
+    <ellipse cx="530" cy="164" rx="22" ry="15"/>
+  </g>
+  <g fill="none" stroke="#33415c" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M226 168 q12 -13 24 0 q12 -13 24 0"/>
+    <path d="M286 204 q9 -10 18 0 q9 -10 18 0"/>
+    <path d="M448 66 q10 -11 20 0 q10 -11 20 0"/>
+  </g>
+
+  <!-- fumée de la cheminée -->
+  <g fill="#e9edf5" opacity=".9">
+    <circle cx="318" cy="208" r="12"/>
+    <circle cx="300" cy="188" r="15"/>
+    <circle cx="276" cy="174" r="18"/>
+  </g>
+
+  <!-- côte et phare, à gauche -->
+  <path d="M0 330 Q40 316 82 326 T156 334 L156 374 L0 374 Z" fill="#6aa84f"/>
+  <rect x="52" y="250" width="22" height="80" fill="#fff"/>
+  <rect x="52" y="266" width="22" height="14" fill="#e4572e"/>
+  <rect x="52" y="296" width="22" height="14" fill="#e4572e"/>
+  <rect x="48" y="240" width="30" height="12" fill="#33415c"/>
+  <path d="M51 240 L63 222 L75 240 Z" fill="#e4572e"/>
+  <circle cx="63" cy="246" r="4" fill="#ffd166"/>
+
+  <!-- falaises blanches, à droite -->
+  <path d="M468 374 L478 336 L505 330 L530 322 L560 326 L600 318 L600 374 Z" fill="#f6f2ea"/>
+  <path d="M476 332 L505 322 L530 314 L560 318 L600 310 L600 320 L560 328 L530 324 L505 332 L478 338 Z" fill="#7cb342"/>
+
+  <!-- mer -->
+  <rect y="370" width="600" height="230" fill="url(#mer)"/>
+
+  <!-- ferry -->
+  <rect x="300" y="226" width="40" height="44" rx="4" fill="#e4572e"/>
+  <rect x="300" y="226" width="40" height="12" rx="4" fill="#1f3a6e"/>
+  <rect x="214" y="268" width="182" height="34" rx="6" fill="#fff"/>
+  <rect x="190" y="300" width="244" height="42" rx="6" fill="#fff"/>
+  <g fill="#2b55b8">
+    <rect x="228" y="279" width="14" height="11" rx="2"/>
+    <rect x="252" y="279" width="14" height="11" rx="2"/>
+    <rect x="276" y="279" width="14" height="11" rx="2"/>
+    <rect x="348" y="279" width="14" height="11" rx="2"/>
+    <rect x="372" y="279" width="14" height="11" rx="2"/>
+    <rect x="202" y="313" width="16" height="12" rx="2"/>
+    <rect x="228" y="313" width="16" height="12" rx="2"/>
+    <rect x="254" y="313" width="16" height="12" rx="2"/>
+    <rect x="280" y="313" width="16" height="12" rx="2"/>
+    <rect x="306" y="313" width="16" height="12" rx="2"/>
+    <rect x="332" y="313" width="16" height="12" rx="2"/>
+    <rect x="358" y="313" width="16" height="12" rx="2"/>
+    <rect x="384" y="313" width="16" height="12" rx="2"/>
+    <rect x="410" y="313" width="16" height="12" rx="2"/>
+  </g>
+  <path d="M150 340 L488 340 L456 412 L178 412 Z" fill="#fff"/>
+  <path d="M164 376 L472 376 L456 412 L178 412 Z" fill="#1f3a6e"/>
+  <path d="M156 360 L480 360" stroke="#e4572e" stroke-width="7"/>
+  <g fill="#2b55b8">
+    <circle cx="210" cy="350" r="4"/>
+    <circle cx="250" cy="350" r="4"/>
+    <circle cx="290" cy="350" r="4"/>
+    <circle cx="330" cy="350" r="4"/>
+    <circle cx="370" cy="350" r="4"/>
+    <circle cx="410" cy="350" r="4"/>
+    <circle cx="450" cy="350" r="4"/>
+  </g>
+  <!-- pavillon tricolore à la poupe -->
+  <path d="M162 340 L162 296" stroke="#33415c" stroke-width="3"/>
+  <rect x="163" y="297" width="9" height="16" fill="#2b55b8"/>
+  <rect x="172" y="297" width="9" height="16" fill="#fff"/>
+  <rect x="181" y="297" width="9" height="16" fill="#e4572e"/>
+
+  <!-- vagues et sillage -->
+  <g fill="none" stroke="#fff" stroke-linecap="round">
+    <path d="M140 416 Q190 404 240 416 T340 416 T440 416 T520 414" stroke-width="5" opacity=".9"/>
+    <path d="M176 424 Q120 432 40 446" stroke-width="5" opacity=".7"/>
+    <path d="M180 434 Q130 450 70 470" stroke-width="4" opacity=".5"/>
+    <path d="M30 482 q20 -10 40 0 t40 0" stroke-width="3.5" opacity=".55"/>
+    <path d="M460 448 q20 -10 40 0 t40 0" stroke-width="3.5" opacity=".55"/>
+    <path d="M250 455 q20 -10 40 0 t40 0" stroke-width="3.5" opacity=".45"/>
+    <path d="M40 585 q20 -10 40 0 t40 0" stroke-width="3.5" opacity=".45"/>
+    <path d="M300 584 q20 -10 40 0 t40 0" stroke-width="3.5" opacity=".45"/>
+    <path d="M470 580 q20 -10 40 0 t40 0" stroke-width="3.5" opacity=".45"/>
+  </g>
+
+  <!-- bouée -->
+  <circle cx="548" cy="490" r="16" fill="none" stroke="#e4572e" stroke-width="9"/>
+  <circle cx="548" cy="490" r="16" fill="none" stroke="#fff" stroke-width="9" stroke-dasharray="12.6 12.6"/>
+
+  <text x="300" y="548" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-weight="900"
+        font-size="80" letter-spacing="5" fill="#fff8ec" stroke="#0e2250" stroke-width="7" paint-order="stroke">LA MANCHE</text>
+</svg>

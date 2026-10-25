@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Joyeux anniversaire, Marine ! 🎂</title>
+  <meta name="description" content="Un petit jeu rien que pour toi… 🎁">
+  <meta name="theme-color" content="#121a2f">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Joyeux anniversaire, Marine ! 🎂">
+  <meta property="og:description" content="Un petit jeu rien que pour toi… 🎁">
+  <meta property="og:url" content="https://amadoracacioperez-ai.github.io/joyeux-anniversaire-marine/">
+  <meta property="og:image" content="https://amadoracacioperez-ai.github.io/joyeux-anniversaire-marine/img/apercu.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <div class="app">
+    <header class="entete">
+      <div class="entete-haut">
+        <span class="marque">Le Cadeau Mystère</span>
+        <button class="bouton-son" id="bouton-son" type="button" aria-label="Couper le son">🔊</button>
+      </div>
+      <ol class="rangee-cadenas" id="rangee-cadenas" aria-label="Cadenas"></ol>
+    </header>
+    <main class="ecran" id="ecran"></main>
+    <section class="carnet" id="carnet" hidden></section>
+    <footer class="pied">
+      <button class="bouton-lien discret" id="recommencer" type="button">Recommencer depuis le début</button>
+    </footer>
+  </div>
+  <div class="modale" id="modale" hidden></div>
+  <noscript><p class="noscript">Active JavaScript pour jouer 🎁</p></noscript>
+</body>
+</html>
