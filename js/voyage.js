@@ -72,16 +72,9 @@ export function afficherVoyage(ecran, V, etat, { sauver, ouvrirModale, fermerMod
     if (bons === V.questions.length) return surReussite();
     son.erreur();
     vibrer([50, 40, 50]);
-    // Chaque choix en vert s'il est bon, en rouge sinon.
-    const bilan = V.questions.map((q) => {
-      const o = choisie(q);
-      return h('li', { class: o.correct ? 'bilan-ok' : 'bilan-ko' },
-        visuel(o), h('span', {}, o.texte), h('b', { class: 'bilan-marque' }, o.correct ? '✓' : '✗'));
-    });
     ouvrirModale(
-      h('div', { class: 'grande-croix', 'aria-hidden': 'true' }, '✗'),
+      h('div', { class: 'grand-emoji', 'aria-hidden': 'true' }, '🙈'),
       h('p', { class: 'indice-grand' }, V.rate.titre),
-      h('ul', { class: 'bilan' }, bilan),
       h('p', {}, V.rate.texte.replace('{bons}', bons)),
       h('button', {
         class: 'bouton', type: 'button',
