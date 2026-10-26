@@ -87,7 +87,7 @@ button:focus-visible, input:focus-visible, summary:focus-visible { outline: 3px 
   margin: 10px 0 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(var(--n, 6), 1fr);
   gap: 8px;
 }
 .rangee-cadenas li {
@@ -446,6 +446,70 @@ h2 { font-size: 29px; }
 .option:disabled { cursor: default; }
 .option-fausse { opacity: .5; text-decoration: line-through; border-color: #f0b8a8; }
 .option-bonne { opacity: 1; border-color: var(--vert); background: var(--vert); color: #fff; }
+
+/* Options façon « Qui veut gagner des millions ? » */
+.options .option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 2px solid var(--or);
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--nuit-3), var(--nuit));
+  color: var(--creme);
+  box-shadow: 0 0 0 3px #f2b13422;
+}
+.option-lettre { color: var(--or); font-weight: 900; }
+.options .option-fausse { opacity: .45; border-color: #ffffff40; }
+.options .option-bonne { border-color: var(--vert); background: var(--vert); color: #fff; }
+.option-bonne .option-lettre { color: #fff; }
+
+/* ---------- voyage : les trois choix ---------- */
+
+.voyage-zone { margin-top: 18px; }
+.voyage-num { margin: 0; font-size: 13px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--encre-douce); text-align: center; }
+.voyage-question { margin: 4px 0 14px; font: 700 25px var(--titre); text-align: center; }
+.voyage-zone > .bouton { display: block; width: 100%; }
+.choix { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.choix-bouton {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: 14px 6px;
+  border: 2px solid #e2d6bd;
+  border-radius: 16px;
+  background: #fff;
+  color: var(--encre);
+  font: 800 15px/1.2 var(--texte);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.choix-bouton:active { transform: scale(.96); border-color: var(--or); }
+.visuel { display: block; font-size: 40px; line-height: 1; }
+img.visuel-img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; }
+.voyage-map { height: 300px; margin-top: 10px; }
+
+.scene {
+  position: sticky;
+  bottom: 10px;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 14px;
+  min-height: 96px;
+  margin: 14px 0;
+  padding: 12px 14px 10px;
+  border-radius: var(--rayon);
+  background: linear-gradient(180deg, #cfe3f5 0 70%, #8fc27a 70%);
+  box-shadow: var(--ombre);
+}
+.figure { display: grid; justify-items: center; gap: 2px; color: var(--encre); }
+.figure .visuel { font-size: 46px; filter: drop-shadow(0 3px 2px #0004); }
+.figure img.visuel-img { width: 60px; height: 60px; border: 3px solid #fff; }
+.figure small { font-size: 11px; font-weight: 800; }
+.pop { animation: pop .55s cubic-bezier(.2, 1.6, .4, 1); }
+@keyframes pop { from { opacity: 0; transform: translateY(20px) scale(.3); } }
+.grand-emoji { font-size: 64px; line-height: 1; }
 
 /* ---------- carnet d'indices ---------- */
 

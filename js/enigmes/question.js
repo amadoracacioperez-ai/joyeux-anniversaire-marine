@@ -6,8 +6,10 @@ export function monter(zone, d, api) {
     zone.append(formulaireReponse(api, d.reponses, d.placeholder));
     return;
   }
-  const boutons = d.options.map((option) => {
-    const bouton = h('button', { class: 'option', type: 'button' }, option.texte);
+  // Lettres A, B, C, D comme dans « Qui veut gagner des millions ? ».
+  const boutons = d.options.map((option, k) => {
+    const bouton = h('button', { class: 'option', type: 'button' },
+      h('span', { class: 'option-lettre' }, `${String.fromCharCode(65 + k)} :`), option.texte);
     bouton.addEventListener('click', () => {
       if (option.correct) {
         bouton.classList.add('option-bonne');

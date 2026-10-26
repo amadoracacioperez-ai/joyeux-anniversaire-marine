@@ -62,7 +62,7 @@ function charger(url) {
   });
 }
 
-const icone = (L, emoji, classe = 'repere') =>
+export const icone = (L, emoji, classe = 'repere') =>
   L.divIcon({ className: classe, html: `<span>${emoji}</span>`, iconSize: [34, 34], iconAnchor: [17, 17] });
 
 // Ajoute des points intermédiaires pour que le tracé avance en douceur.
@@ -76,7 +76,7 @@ function densifier(points, pas = 0.01) {
   return res;
 }
 
-function tracer(L, carte, mobile, points, style, duree) {
+export function tracer(L, carte, mobile, points, style, duree) {
   const pts = densifier(points);
   const ligne = L.polyline(reduit() ? pts : [pts[0]], style).addTo(carte);
   if (reduit()) {
@@ -97,14 +97,18 @@ function tracer(L, carte, mobile, points, style, duree) {
   });
 }
 
-async function dessinerCarte(conteneur, K) {
+export async function chargerLeaflet() {
   if (!window.L) {
     await Promise.race([
       Promise.all([charger(`${LEAFLET}leaflet.min.css`), charger(`${LEAFLET}leaflet.min.js`)]),
       new Promise((_, ko) => setTimeout(() => ko(new Error('Leaflet trop lent')), 10000)),
     ]);
   }
-  const L = window.L;
+  return window.L;
+}
+
+// Carte vide avec le fond OpenStreetMap France, et l'OSM standard si les tuiles échouent.
+export function nouvelleCarte(L, conteneur) {
   const carte = L.map(conteneur, { scrollWheelZoom: false, zoomSnap: 0.25 });
   carte.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>');
   const credits = '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>';
@@ -116,6 +120,12 @@ async function dessinerCarte(conteneur, K) {
     L.tileLayer(TUILES_SECOURS, { maxZoom: 19, attribution: credits }).addTo(carte);
   });
   fond.addTo(carte);
+  return carte;
+}
+
+async function dessinerCarte(conteneur, K) {
+  const L = await chargerLeaflet();
+  const carte = nouvelleCarte(L, conteneur);
   carte.fitBounds(L.latLngBounds([...K.france, ...K.ferry, ...K.angleterre]), { padding: [24, 24] });
 
   for (const e of K.etapes) {

@@ -43,9 +43,17 @@ export function normaliser(texte) {
   return t;
 }
 
+const contient = (s, mot) => (Array.isArray(mot)
+  ? mot.some((variante) => contient(s, variante))
+  : s.includes(` ${normaliser(mot)} `));
+
+// Une réponse en liste exige chacun de ses éléments, dans n'importe quel ordre :
+// [["soupe", "soup"], "whisky"] accepte « du whisky et de la soup ».
 export function correspond(saisie, reponses) {
   const s = ` ${normaliser(saisie)} `;
-  return s.trim() !== '' && reponses.some((r) => s.includes(` ${normaliser(r)} `));
+  return s.trim() !== '' && reponses.some((r) => (Array.isArray(r)
+    ? r.every((mot) => contient(s, mot))
+    : contient(s, r)));
 }
 
 export function melanger(liste) {

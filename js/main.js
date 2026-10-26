@@ -1,26 +1,22 @@
 import B64 from './contenu.js';
 import { h, typo, decoder, svgCadenas, son, vibrer, confettis, aleatoire } from './utils.js';
 import * as question from './enigmes/question.js';
-import * as rebus from './enigmes/rebus.js';
-import * as morse from './enigmes/morse.js';
-import * as taquin from './enigmes/taquin.js';
-import * as motus from './enigmes/motus.js';
-import * as anagramme from './enigmes/anagramme.js';
 import { afficherRevelation } from './revelation.js';
+import { afficherVoyage } from './voyage.js';
 
 const C = decoder(B64);
-const ENIGMES = { question, rebus, morse, taquin, motus, anagramme };
+const ENIGMES = { question };
 const NB = C.cadenas.length;
 
-// Écrans : 0 = accueil, 1..NB = cadenas, FINAL = dernière question, REVELATION = le cadeau.
-const FINAL = NB + 1;
+// Écrans : 0 = accueil, 1..NB = cadenas, VOYAGE = les trois choix, REVELATION = le cadeau.
+const VOYAGE = NB + 1;
 const REVELATION = NB + 2;
 
-const CLE = 'cadeau-mystere-v1';
+const CLE = 'cadeau-mystere-v2';
 const params = new URLSearchParams(location.search);
 const TEST = params.has('test');
 
-const etatInitial = () => ({ ecran: 0, aides: Array(NB).fill(0), erreurs: 0, debut: null, fin: null });
+const etatInitial = () => ({ ecran: 0, aides: Array(NB).fill(0), erreurs: 0, choix: {}, debut: null, fin: null });
 
 if (params.has('reset')) {
   try { localStorage.removeItem(CLE); } catch {}
@@ -49,6 +45,7 @@ const modaleEl = document.getElementById('modale');
 const rangee = document.getElementById('rangee-cadenas');
 const boutonSon = document.getElementById('bouton-son');
 
+rangee.style.setProperty('--n', NB);
 rangee.append(...C.cadenas.map((_, i) => h('li', { 'aria-label': `Cadenas ${i + 1}` }, svgCadenas())));
 
 function afficher() {
@@ -63,7 +60,7 @@ function afficher() {
   window.scrollTo(0, 0);
   if (etat.ecran === 0) accueil();
   else if (etat.ecran <= NB) cadenas(etat.ecran - 1);
-  else if (etat.ecran === FINAL) questionFinale();
+  else if (etat.ecran === VOYAGE) voyage();
   else afficherRevelation(ecranEl, C.revelation, etat, recommencer);
 }
 
@@ -127,7 +124,7 @@ function cadenas(i) {
     d.consigne && h('p', { class: 'consigne' }, d.consigne),
     zone,
     retour,
-    h('div', { class: 'aides' }, boutonAide, listeAides));
+    d.aides.length > 0 && h('div', { class: 'aides' }, boutonAide, listeAides));
   ecranEl.append(carte);
 
   const api = creerApi(carte, retour, () => ouvrirCadenas(i));
@@ -195,30 +192,25 @@ function ouvrirCadenas(i) {
   setTimeout(() => grand.classList.add('ouvert'), 250);
 }
 
-function questionFinale() {
-  const F = C.final;
-  const zone = h('div', { class: 'enigme' });
-  const retour = h('p', { class: 'retour', role: 'status', 'aria-live': 'polite' });
-  const carte = h('section', { class: 'carte' },
-    h('p', { class: 'surtitre' }, F.surtitre),
-    h('h2', {}, F.titre),
-    h('p', { class: 'consigne' }, F.consigne),
-    zone,
-    retour);
-  ecranEl.append(carte);
-  question.monter(zone, { mode: 'choix', options: F.options }, creerApi(carte, retour, () => {
-    etat.ecran = REVELATION;
-    etat.fin ??= Date.now();
-    sauver();
-    setTimeout(afficher, 700);
-  }));
+function voyage() {
+  afficherVoyage(ecranEl, C.voyage, etat, {
+    sauver,
+    ouvrirModale,
+    fermerModale,
+    surReussite() {
+      etat.ecran = REVELATION;
+      etat.fin ??= Date.now();
+      sauver();
+      afficher();
+    },
+  });
 }
 
 function majCarnet(ouverts, nouveau = -1) {
-  carnetEl.hidden = etat.ecran === 0 || etat.ecran === REVELATION;
+  carnetEl.hidden = etat.ecran === 0 || etat.ecran >= VOYAGE;
   if (carnetEl.hidden) return;
   carnetEl.replaceChildren(
-    h('h3', {}, `Carnet d'indices · ${ouverts}/${NB}`),
+    h('h3', {}, `Carnet de route · ${ouverts}/${NB}`),
     h('ol', {}, C.cadenas.map((c, k) => (k < ouverts
       ? h('li', { class: k === nouveau ? 'nouveau' : null },
         h('span', { class: 'emoji', 'aria-hidden': 'true' }, c.indice.emoji), h('span', {}, c.indice.texte))
