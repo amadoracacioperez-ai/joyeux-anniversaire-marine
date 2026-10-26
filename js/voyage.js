@@ -75,6 +75,7 @@ export function afficherVoyage(ecran, V, etat, { sauver, ouvrirModale, fermerMod
     ouvrirModale(
       h('div', { class: 'grand-emoji', 'aria-hidden': 'true' }, '🙈'),
       h('p', { class: 'indice-grand' }, V.rate.titre),
+      ...V.questions.map((q) => choisie(q).reaction).filter(Boolean).map((r) => h('p', { class: 'reaction' }, r)),
       h('p', {}, V.rate.texte.replace('{bons}', bons)),
       h('button', {
         class: 'bouton', type: 'button',
