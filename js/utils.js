@@ -161,6 +161,25 @@ export const son = {
       .forEach(([f, t, d]) => this.note(f, t, d, { type: 'triangle', volume: 0.14 }));
   },
 
+  get pret() { return ctx?.state === 'running'; },
+
+  // « Joyeux anniversaire », avec le même timbre que la fanfare. Durées en temps (3/4).
+  anniversaire() {
+    const [G, A, B, C, D, E, F, G2] = [392, 440, 493.88, 523.25, 587.33, 659.25, 698.46, 783.99];
+    const air = [
+      [G, 0.75], [G, 0.25], [A, 1], [G, 1], [C, 1], [B, 2],
+      [G, 0.75], [G, 0.25], [A, 1], [G, 1], [D, 1], [C, 2],
+      [G, 0.75], [G, 0.25], [G2, 1], [E, 1], [C, 1], [B, 1], [A, 2],
+      [F, 0.75], [F, 0.25], [E, 1], [C, 1], [D, 1], [C, 3],
+    ];
+    const temps = 0.36;
+    let t = 0.05;
+    for (const [f, d] of air) {
+      this.note(f, t, d * temps * 0.92, { type: 'triangle', volume: 0.14 });
+      t += d * temps;
+    }
+  },
+
   // Joue le morse (même si le son est coupé : c'est elle qui a demandé à écouter)
   // et prévient à chaque symbole pour l'allumer à l'écran.
   morse(lettres, surSymbole) {

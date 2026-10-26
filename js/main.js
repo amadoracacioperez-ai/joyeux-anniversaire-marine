@@ -66,6 +66,10 @@ function afficher() {
 
 function accueil() {
   const A = C.accueil;
+  // Les navigateurs bloquent le son avant le premier geste : on tente tout de suite, sinon au premier toucher.
+  son.activer();
+  if (son.pret) son.anniversaire();
+  else document.addEventListener('click', () => { son.activer(); son.anniversaire(); }, { once: true });
   ecranEl.append(h('section', { class: 'carte accueil' },
     h('div', { class: 'cadeau', 'aria-hidden': 'true' }, '🎁'),
     h('h1', {}, A.titre),
