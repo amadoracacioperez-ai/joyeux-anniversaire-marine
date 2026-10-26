@@ -180,6 +180,7 @@ function ouvrirCadenas(i) {
   ouvrirModale(
     grand,
     h('p', { class: 'surtitre' }, 'Cadenas ouvert !'),
+    d.indice.photo && h('img', { class: 'indice-photo', src: d.indice.photo, alt: '' }),
     h('p', { class: 'indice-numero' }, `Indice n°${i + 1}`),
     h('p', { class: 'indice-grand' }, h('span', { class: 'emoji', 'aria-hidden': 'true' }, d.indice.emoji), d.indice.texte),
     h('button', {

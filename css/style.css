@@ -559,6 +559,16 @@ img.visuel-img { width: 56px; height: 56px; border-radius: 50%; object-fit: cove
 .grand-cadenas { width: 86px; height: 86px; margin: 0 auto 4px; color: var(--or); }
 .grand-cadenas .cadenas-svg { width: 100%; height: 100%; }
 .grand-cadenas .trou { stroke: var(--creme); }
+.indice-photo {
+  display: block;
+  width: 100%;
+  max-height: 42vh;
+  margin: 10px 0 0;
+  border-radius: 14px;
+  object-fit: cover;
+  box-shadow: 0 6px 18px #0004;
+  animation: monte .6s cubic-bezier(.2, 1.4, .4, 1);
+}
 .indice-numero { margin: 14px 0 0; font: italic 700 18px var(--titre); color: var(--encre-douce); }
 .indice-grand { margin: 4px 0 22px; font: 700 23px/1.35 var(--titre); }
 .indice-grand .emoji { display: block; margin-bottom: 6px; font-size: 48px; }
