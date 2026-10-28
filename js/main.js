@@ -15,8 +15,12 @@ const REVELATION = NB + 2;
 const CLE = 'cadeau-mystere-v2';
 const params = new URLSearchParams(location.search);
 const TEST = params.has('test');
+const DUREE_BLOCAGE = 2 * 60 * 60 * 1000; // 2 heures
 
-const etatInitial = () => ({ ecran: 0, aides: Array(NB).fill(0), erreurs: 0, choix: {}, debut: null, fin: null });
+const etatInitial = () => ({
+  ecran: 0, aides: Array(NB).fill(0), erreurs: 0, choix: {}, debut: null, fin: null,
+  porteOk: false, bloqueeJusqu: null,
+});
 
 if (params.has('reset')) {
   try { localStorage.removeItem(CLE); } catch {}
@@ -26,11 +30,15 @@ if (params.has('reset')) {
 }
 
 let etat = charger();
+let decompteId = null;
 
 function charger() {
   try {
     const sauve = JSON.parse(localStorage.getItem(CLE));
-    if (sauve && Number.isInteger(sauve.ecran)) return { ...etatInitial(), ...sauve };
+    // Les parties déjà commencées avant l'ajout de la porte n'ont pas à la repasser.
+    if (sauve && Number.isInteger(sauve.ecran)) {
+      return { ...etatInitial(), ...sauve, porteOk: sauve.porteOk ?? sauve.ecran > 0 };
+    }
   } catch {}
   return etatInitial();
 }
@@ -50,6 +58,20 @@ rangee.append(...C.cadenas.map((_, i) => h('li', { 'aria-label': `Cadenas ${i + 
 
 function afficher() {
   fermerModale();
+  arreterDecompte();
+  if (!etat.porteOk) {
+    rangee.hidden = true;
+    ecranEl.replaceChildren();
+    window.scrollTo(0, 0);
+    if (etat.bloqueeJusqu && Date.now() >= etat.bloqueeJusqu) {
+      etat.bloqueeJusqu = null;
+      sauver();
+    }
+    if (etat.bloqueeJusqu) bloque();
+    else porte();
+    return;
+  }
+  rangee.hidden = false;
   const ouverts = Math.min(NB, Math.max(0, etat.ecran - 1));
   [...rangee.children].forEach((li, i) => {
     li.classList.toggle('ouvert', i < ouverts);
@@ -62,6 +84,87 @@ function afficher() {
   else if (etat.ecran <= NB) cadenas(etat.ecran - 1);
   else if (etat.ecran === VOYAGE) voyage();
   else afficherRevelation(ecranEl, C.revelation, etat, recommencer);
+}
+
+// Porte d'entrée : une question de maths façon « Qui veut gagner des millions »,
+// à réussir avant même l'accueil. Un échec verrouille le jeu pendant deux heures.
+function porte() {
+  const P = C.porte;
+  const retour = h('p', { class: 'retour', role: 'status', 'aria-live': 'polite' });
+  const boutons = P.options.map((option, k) => {
+    const bouton = h('button', { class: 'option', type: 'button' },
+      h('span', { class: 'option-lettre' }, `${String.fromCharCode(65 + k)} :`), option.texte);
+    bouton.addEventListener('click', () => {
+      son.activer();
+      boutons.forEach((b) => { b.disabled = true; });
+      if (option.correct) {
+        son.succes();
+        bouton.classList.add('option-bonne');
+        etat.porteOk = true;
+        sauver();
+        setTimeout(afficher, 500);
+      } else {
+        son.erreur();
+        vibrer([50, 40, 50]);
+        bouton.classList.add('option-fausse');
+        retour.className = 'retour retour-erreur';
+        retour.textContent = typo('Verrouillage en cours…');
+        etat.bloqueeJusqu = Date.now() + DUREE_BLOCAGE;
+        sauver();
+        setTimeout(afficher, 900);
+      }
+    });
+    return bouton;
+  });
+  const carte = h('section', { class: 'carte accueil' },
+    h('div', { class: 'cadeau', 'aria-hidden': 'true' }, '🔒'),
+    h('h1', {}, P.titre),
+    h('p', { class: 'consigne' }, P.consigne),
+    h('h2', {}, P.question),
+    h('div', { class: 'options' }, boutons),
+    retour);
+  ecranEl.append(carte);
+  if (TEST) carte.append(h('button', { class: 'bouton-test', type: 'button', onclick: () => { etat.porteOk = true; sauver(); afficher(); } }, '⏭ Passer'));
+}
+
+// Écran de verrouillage : décompte en direct jusqu'à la fin du blocage.
+function bloque() {
+  const P = C.porte.bloque;
+  const ligneTemps = h('p', { class: 'consigne centre' }, '');
+  const carte = h('section', { class: 'carte accueil' },
+    h('div', { class: 'cadeau', 'aria-hidden': 'true' }, '🔒'),
+    h('h1', {}, P.titre),
+    h('p', {}, P.texte),
+    ligneTemps);
+  ecranEl.append(carte);
+  const maj = () => {
+    const reste = etat.bloqueeJusqu - Date.now();
+    if (reste <= 0) {
+      arreterDecompte();
+      etat.bloqueeJusqu = null;
+      sauver();
+      afficher();
+      return;
+    }
+    ligneTemps.textContent = typo(P.decompte.replace('{temps}', formaterDecompte(reste)));
+  };
+  maj();
+  decompteId = setInterval(maj, 1000);
+  if (TEST) carte.append(h('button', { class: 'bouton-test', type: 'button', onclick: () => { etat.bloqueeJusqu = null; sauver(); afficher(); } }, '⏭ Passer'));
+}
+
+function arreterDecompte() {
+  if (decompteId == null) return;
+  clearInterval(decompteId);
+  decompteId = null;
+}
+
+function formaterDecompte(ms) {
+  const total = Math.max(0, Math.ceil(ms / 1000));
+  const h2 = Math.floor(total / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const s = total % 60;
+  return [h2, m, s].map((n) => String(n).padStart(2, '0')).join(':');
 }
 
 function accueil() {

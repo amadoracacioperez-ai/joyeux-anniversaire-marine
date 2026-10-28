@@ -90,6 +90,7 @@ button:focus-visible, input:focus-visible, summary:focus-visible { outline: 3px 
   grid-template-columns: repeat(var(--n, 6), 1fr);
   gap: 8px;
 }
+.rangee-cadenas[hidden] { display: none; }
 .rangee-cadenas li {
   display: grid;
   place-items: center;
