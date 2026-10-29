@@ -487,6 +487,7 @@ h2 { font-size: 29px; }
 .choix-bouton:active { transform: scale(.96); border-color: var(--or); }
 .visuel { display: block; font-size: 40px; line-height: 1; }
 img.visuel-img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; }
+img.visuel-icone { width: 40px; height: 40px; }
 .voyage-map { height: 300px; margin-top: 10px; }
 
 .scene {
@@ -507,6 +508,7 @@ img.visuel-img { width: 56px; height: 56px; border-radius: 50%; object-fit: cove
 .figure { display: grid; justify-items: center; gap: 2px; color: var(--encre); }
 .figure .visuel { font-size: 46px; filter: drop-shadow(0 3px 2px #0004); }
 .figure img.visuel-img { width: 60px; height: 60px; border: 3px solid #fff; }
+.figure img.visuel-icone { width: 46px; height: 46px; filter: drop-shadow(0 3px 2px #0004); }
 .figure small { font-size: 11px; font-weight: 800; }
 .pop { animation: pop .55s cubic-bezier(.2, 1.6, .4, 1); }
 @keyframes pop { from { opacity: 0; transform: translateY(20px) scale(.3); } }

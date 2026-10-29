@@ -58,7 +58,7 @@ export function afficherVoyage(ecran, V, etat, { sauver, ouvrirModale, fermerMod
       L.marker(V.depart, { icon: icone(L, '🥐'), keyboard: false, interactive: false }).addTo(carte);
       L.marker(destination.pos, { icon: icone(L, destination.emoji), keyboard: false, interactive: false }).addTo(carte);
       const mobile = L.marker(V.depart, {
-        icon: icone(L, transport.emoji, 'repere repere-velo'), zIndexOffset: 1000, keyboard: false, interactive: false,
+        icon: icone(L, marqueur(transport), 'repere repere-velo'), zIndexOffset: 1000, keyboard: false, interactive: false,
       }).addTo(carte);
       await tracer(L, carte, mobile, trajet, { color: '#e4572e', weight: 5, opacity: 0.9, lineCap: 'round' }, 3200);
     } catch {
@@ -93,11 +93,17 @@ export function afficherVoyage(ecran, V, etat, { sauver, ouvrirModale, fermerMod
   etape();
 }
 
+// Pour le repère qui se déplace sur la carte : le pictogramme de `icone` s'il y en a un, l'emoji sinon.
+function marqueur(o) {
+  return o.icone ? `<img src="${o.image}" alt="" style="width:28px;height:28px">` : o.emoji;
+}
+
 // Une photo ou un dessin si `image` est fourni, l'emoji sinon (ou si l'image ne charge pas).
+// `icone` : l'image est un pictogramme plat (pas une photo), donc pas de cadre rond.
 function visuel(o) {
   const emoji = h('span', { class: 'visuel', 'aria-hidden': 'true' }, o.emoji);
   if (!o.image) return emoji;
-  const img = h('img', { class: 'visuel visuel-img', src: o.image, alt: '' });
+  const img = h('img', { class: `visuel ${o.icone ? 'visuel-icone' : 'visuel-img'}`, src: o.image, alt: '' });
   img.addEventListener('error', () => img.replaceWith(emoji), { once: true });
   return img;
 }
